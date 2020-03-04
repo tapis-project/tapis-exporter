@@ -4,4 +4,5 @@ before_script:
 build_image:
   script:
     - docker build -t gitlab.tacc.utexas.edu:5005/hammock/tapis-exporter .
+    - docker push gitlab.tacc.utexas.edu:5005/hammock/tapis-exporter 
 #    - docker run tapis-exporter /script/to/run/tests
