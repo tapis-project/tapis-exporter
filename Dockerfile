@@ -4,7 +4,8 @@ COPY requirements.txt /
 
 RUN pip install -r /requirements.txt
 
-COPY src/ /app
-WORKDIR /app
+COPY app /app
+WORKDIR /
 
-CMD ["gunicorn", "-w 4", "main:app"]
+#CMD ["gunicorn", "-w 4", "app:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "app:app"]
