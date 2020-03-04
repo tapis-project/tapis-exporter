@@ -3,6 +3,7 @@ before_script:
   
 build_image:
   script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker build -t gitlab.tacc.utexas.edu:5005/hammock/tapis-exporter .
     - docker push gitlab.tacc.utexas.edu:5005/hammock/tapis-exporter 
 #    - docker run tapis-exporter /script/to/run/tests
