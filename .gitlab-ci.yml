@@ -1,7 +1,7 @@
 before_script:
-    - docker info
+  - docker info
   
-  build_image:
-    script:
-      - docker build -t tapis-exporter .
-#      - docker run tapis-exporter /script/to/run/tests
+build_image:
+  script:
+    - docker build -t tapis-exporter .
+#    - docker run tapis-exporter /script/to/run/tests
