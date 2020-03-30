@@ -1,0 +1,7 @@
+version: '3'
+services:
+  tapex:
+    build: .
+    ports:
+      - "8000:8000"
+    image: tapis-exporter:latest
