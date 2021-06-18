@@ -25,7 +25,7 @@ class TapisCollector(object):
 
         # healthcheck
         healthcheck_metric = GaugeMetricFamily('tapis_service_health', 'Service Health', labels=['service'])
-        for service in ['security','meta']:
+        for service in ['security','meta','streams']:
             value = self.healthcheck(service)
             healthcheck_metric.add_metric([service], value)
         yield healthcheck_metric
