@@ -39,5 +39,5 @@ if __name__ == "__main__":
       sys.exit("[ERROR] Environment variable not set: TAPIS_URL")
 
     prometheus_client.start_http_server(8000)
-    REGISTRY.register(TapisCollector())
+    REGISTRY.register(TapisCollector(tapis_url))
     while True: time.sleep(1)
