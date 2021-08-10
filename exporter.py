@@ -9,11 +9,11 @@ from prometheus_client.core import REGISTRY, Gauge, GaugeMetricFamily
 
 class TapisCollector(object):
     def __init__(self,tapis_url):
-        pass
+        self.tapis_url = tapis_url
 
     def healthcheck(self, service):
 #        url = 'https://dev.develop.tapis.io/v3/%s/healthcheck' % service
-        url = '%s/v3/%s/healthcheck' % tapis_url, service
+        url = '%s/v3/%s/healthcheck' % self.tapis_url, service
         r = requests.get(url)
         status = r.status_code
         if (status == 200):
