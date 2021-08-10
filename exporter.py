@@ -13,7 +13,7 @@ class TapisCollector(object):
 
     def healthcheck(self, service):
 #        url = 'https://dev.develop.tapis.io/v3/%s/healthcheck' % service
-        url = '%s/v3/%s/healthcheck' % self.tapis_url, service
+        url = '%s/v3/%s/healthcheck' % (self.tapis_url, service)
         r = requests.get(url)
         status = r.status_code
         if (status == 200):
