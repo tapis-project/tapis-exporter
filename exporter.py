@@ -8,11 +8,11 @@ from prometheus_client.core import REGISTRY, Gauge, GaugeMetricFamily
 
 
 class TapisCollector(object):
-    def __init__(self,tapis_url, tapis_services=None):
+    def __init__(self,tapis_url, tapis_services=[]):
         self.tapis_url = tapis_url
         
         # Use default serivces list if None has been specified
-        if tapis_services is None:
+        if tapis_services is []:
             self.services = ['security','meta','streams']
         else:
             self.services = tapis_services
@@ -44,7 +44,7 @@ if __name__ == "__main__":
       sys.exit("[ERROR] Environment variable not set: TAPIS_URL")
     
     # Try to load serivces list from environment variable TAPIS_SERVICES
-    tapis_serivces = loads(os.environ.get('TAPIS_SERVICES'))
+    tapis_serivces = loads(os.environ.get('TAPIS_SERVICES'),[])
                            
     prometheus_client.start_http_server(8000)
     REGISTRY.register(TapisCollector(tapis_url, tapis_services))
