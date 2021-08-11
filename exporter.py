@@ -10,6 +10,7 @@ from prometheus_client.core import REGISTRY, Gauge, GaugeMetricFamily
 class TapisCollector(object):
     def __init__(self,tapis_url):
         self.tapis_url = tapis_url
+        self.services = ['security','meta','streams']
 
     def healthcheck(self, service):
 #        url = 'https://dev.develop.tapis.io/v3/%s/healthcheck' % service
@@ -25,7 +26,7 @@ class TapisCollector(object):
 
         # healthcheck
         healthcheck_metric = GaugeMetricFamily('tapis_service_health', 'Service Health', labels=['service'])
-        for service in ['security','meta','streams']:
+        for service in self.services:
             value = self.healthcheck(service)
             healthcheck_metric.add_metric([service], value)
         yield healthcheck_metric
