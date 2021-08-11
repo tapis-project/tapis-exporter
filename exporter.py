@@ -45,6 +45,10 @@ if __name__ == "__main__":
     
     # Try to load serivces list from environment variable TAPIS_SERVICES
     tapis_serivces = loads(os.environ.get('TAPIS_SERVICES',[]))
+    
+    print("Detected Inputs")
+    print("TAPIS_URL : %s") % tapis_url
+    print("TAPIS_SERVICES : %s") % tapis_services
                            
     prometheus_client.start_http_server(8000)
     REGISTRY.register(TapisCollector(tapis_url, tapis_services))
