@@ -44,11 +44,8 @@ if __name__ == "__main__":
       sys.exit("[ERROR] Environment variable not set: TAPIS_URL")
     
     # Try to load serivces list from environment variable TAPIS_SERVICES
-    try:
-      tapis_serivces = loads(os.environ['TAPIS_SERVICES'])
-    except:
-      tapis_services = None
-
+    tapis_serivces = loads(os.environ.get('TAPIS_SERVICES')
+                           
     prometheus_client.start_http_server(8000)
     REGISTRY.register(TapisCollector(tapis_url, tapis_services))
     while True: time.sleep(1)
