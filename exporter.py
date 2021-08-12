@@ -37,9 +37,12 @@ class TapisCollector(object):
     
 
 if __name__ == "__main__":
+    print("Detected Inputs")
+
     # Check that the environment variable TAPIS_URL has been specified, fail if it has not.
     try:
         tapis_url = os.environ['TAPIS_URL']
+        print("TAPIS_URL : %s") % tapis_url
     except:
         sys.exit("[ERROR] Environment variable not set: TAPIS_URL")
     
@@ -49,9 +52,6 @@ if __name__ == "__main__":
         tapis_services = loads(service_env)
     except:
         tapis_services = []
-
-    print("Detected Inputs")
-    print("TAPIS_URL : %s") % tapis_url
     print("TAPIS_SERVICES : %s") % tapis_services
 
     prometheus_client.start_http_server(8000)
