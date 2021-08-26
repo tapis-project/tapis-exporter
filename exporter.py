@@ -41,14 +41,14 @@ if __name__ == "__main__":
 
     # Check that the environment variable TAPIS_URL has been specified, fail if it has not.
     try:
-        tapis_url = os.environ.get('TAPIS_URL')
+        tapis_url = os.getenv('TAPIS_URL')
         print("TAPIS_URL : %s") % tapis_url
     except:
         sys.exit("[ERROR] Environment variable not set: TAPIS_URL")
     
     # Try to load serivces list from environment variable TAPIS_SERVICES
     try:
-        service_env = os.environ.get('TAPIS_SERVICES')
+        service_env = os.getenv('TAPIS_SERVICES')
         tapis_services = loads(service_env)
     except:
         tapis_services = []
