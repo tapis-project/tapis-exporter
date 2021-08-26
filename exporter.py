@@ -49,7 +49,7 @@ if __name__ == "__main__":
     
     print("Detected Inputs")
     print("TAPIS_URL : {}".format(tapis_url))
-    print("TAPIS_SERVICES : {}").format(tapis_services))
+    print("TAPIS_SERVICES : {}".format(tapis_services))
 
     prometheus_client.start_http_server(8000)
     REGISTRY.register(TapisCollector(tapis_url, tapis_services))
