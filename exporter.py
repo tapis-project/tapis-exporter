@@ -41,7 +41,8 @@ if __name__ == "__main__":
 
     # Check that the environment variable TAPIS_URL has been specified, fail if it has not.
     tapis_url = os.environ["TAPIS_URL"]
-    print("TAPIS_URL : %s") % tapis_url
+    type(tapis_url)
+    print("TAPIS_URL : %s") % str(tapis_url)
         
     # Try to load serivces list from environment variable TAPIS_SERVICES
     try:
