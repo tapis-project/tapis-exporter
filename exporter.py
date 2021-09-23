@@ -1,11 +1,11 @@
 from json import loads
 import os
 import sys
-from tapipy.tapis import Tapis
 import time
 import requests
 import prometheus_client
 from prometheus_client.core import REGISTRY, CounterMetricFamily, Gauge, GaugeMetricFamily
+import pymongo
 
 class TapisCollector(object):
     def __init__(self,tapis_url, tapis_services=[]):
@@ -17,11 +17,12 @@ class TapisCollector(object):
         else:
             self.services = tapis_services
 
-        self.service_token = Tapis(base_url=tapis_url,
-                              username=os.environ['STREAMS_USER'],
-                              account_type='service',
-                              service_password=os.environ['STREAMS_SERVICE_PASSWORD'],
-                              tenant_id='master').get_tokens()
+        mongo_client = pymongo.MongoClient("mongodb://restheart-mongo:27017/",
+                        authSource='admin',
+                        username=os.environ['META_USER'],
+                        password=os.environ['META_PASSWORD'])
+        streams_db = mongo_client[os.environ['STREAMS_DB']]
+        self.streams_metrics = streams_db['streams_metrics']
 
     def healthcheck(self, service):
         url = '%s/v3/%s/healthcheck' % (self.tapis_url, service)
@@ -43,17 +44,16 @@ class TapisCollector(object):
         
         # streams
  #       yield CounterMetricFamily('tapis_streams_uploads_total_bytes', 'Amount of streaming data collected', labels=['report','streams'],
- #                                 value=self.service_token.meta.getCollection('streams_metrics').aggregate($group:{type:'upload', total:{$sum:"$size"}))
+ #                                 value=self.service_token.meta.streams_metrics.aggregate($group:{'type':'upload', total:{$sum:"$size"}))
         yield CounterMetricFamily('tapis_streams_uploads_total', 'Number of data streams transferred', labels=['report','streams'],
-                                  value=self.service_token.meta.getCollection('streams_metrics').find({type:'upload'}).count())
+                                  value=self.streams_metrics.find({'type':'upload'}).count())
         yield CounterMetricFamily('tapis_streams_uploads_total', 'Number of stream archive policies registered', labels=['report','streams'],
-                                  value=self.service_token.meta.getCollection('streams_metrics').find({type:'archive'}).count())
+                                  value=self.service_token.meta.streams_metrics.find({'type':'archive'}).count())
     
 
 if __name__ == "__main__":
     # Check that the environment variables have been specified, fail if they have not.
     tapis_url = os.environ["TAPIS_URL"]
-    streams_db = os.environ['STREAMS_USER']
         
     # Try to load serivces list from environment variable TAPIS_SERVICES
     service_env = os.getenv('TAPIS_SERVICES', "")
