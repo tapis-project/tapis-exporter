@@ -58,7 +58,7 @@ class TapisCollector(object):
         yield streams_num_xfer
 
         yield CounterMetricFamily('tapis_streams_archives_total', 'Number of stream archive policies registered',
-            value = streams_num_archive.add_metric(self.streams_metrics.find({'type':'archive'}).count()))
+            value = self.streams_metrics.find({'type':'archive'}).count() )
     
 
 if __name__ == "__main__":
