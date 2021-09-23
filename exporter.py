@@ -6,8 +6,6 @@ import time
 import requests
 import prometheus_client
 from prometheus_client.core import REGISTRY, CounterMetricFamily, Gauge, GaugeMetricFamily
-import pymongo
-
 
 class TapisCollector(object):
     def __init__(self,tapis_url, tapis_services=[]):
