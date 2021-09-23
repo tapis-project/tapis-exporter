@@ -43,11 +43,17 @@ class TapisCollector(object):
         yield healthcheck_metric
         
         # streams
- #       yield CounterMetricFamily('tapis_streams_uploads_total_bytes', 'Amount of streaming data collected', labels=['report','streams'],
- #                                 value=self.service_token.meta.streams_metrics.aggregate($group:{'type':'upload', total:{$sum:"$size"}))
+        streams_data_pipeline = [
+            { '$match': {'type':'upload'} },
+            { '$group': {
+                '_id' : 'upload_total',
+                'count':{'$sum':"$size"}
+            }}]
+        yield CounterMetricFamily('tapis_streams_uploads_total_bytes', 'Amount of streaming data collected', labels=['report','streams'],
+                                  value=self.service_token.meta.streams_metrics.aggregate(streams_data_pipeline))
         yield CounterMetricFamily('tapis_streams_uploads_total', 'Number of data streams transferred', labels=['report','streams'],
                                   value=self.streams_metrics.find({'type':'upload'}).count())
-        yield CounterMetricFamily('tapis_streams_uploads_total', 'Number of stream archive policies registered', labels=['report','streams'],
+        yield CounterMetricFamily('tapis_streams_archives_total', 'Number of stream archive policies registered', labels=['report','streams'],
                                   value=self.service_token.meta.streams_metrics.find({'type':'archive'}).count())
     
 
