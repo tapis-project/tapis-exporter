@@ -43,15 +43,13 @@ class TapisCollector(object):
         yield healthcheck_metric
         
         # streams
-        # streams_data_pipeline = [
-        #     { '$match': {'type':'upload'} },
-        #     { '$group': {
-        #         '_id' : 'upload_total',
-        #         'count':{'$sum':"$size"}
-        #     }}]
-        # streams_xfer_total = CounterMetricFamily('tapis_streams_total_bytes', 'Amount of data collected')
-        # streams_xfer_total.add_metric(['upload'], self.streams_metrics.aggregate(streams_data_pipeline) )
-        # yield streams_xfer_total
+        streams_data_pipeline = [
+            { '$match': {'type':'upload'} },
+            { '$group': {'_id' : {'$sum':"$size"} }}
+            ]
+        streams_xfer_total = CounterMetricFamily('tapis_streams_total_bytes', 'Amount of data collected')
+        streams_xfer_total.add_metric(['upload'], list(self.streams_metrics.aggregate(streams_data_pipeline))[0]['_id'] )
+        yield streams_xfer_total
 
         streams_num_xfer = CounterMetricFamily('tapis_streams_transferred', 'Number of data streams transferred')
         streams_num_xfer.add_metric(['upload'], int( self.streams_metrics.find({'type':'upload'}).count()) )
