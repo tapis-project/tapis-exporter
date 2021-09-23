@@ -54,11 +54,11 @@ class TapisCollector(object):
         # yield streams_xfer_total
 
         streams_num_xfer = CounterMetricFamily('tapis_streams_transferred', 'Number of data streams transferred')
-        streams_num_xfer.add_metric(['upload'], int( self.streams_metrics.find({'type':'upload'}).count()) )
+        streams_num_xfer.add_metric(['upload'], int( self.streams_metrics.find({'type':'upload'}).count_documents()) )
         yield streams_num_xfer
 
         yield CounterMetricFamily('tapis_streams_archives_total', 'Number of stream archive policies registered',
-            value = int( self.streams_metrics.find({'type':'archive'}).count()) )
+            value = int( self.streams_metrics.find({'type':'archive'}).count_documents()) )
     
 
 if __name__ == "__main__":
