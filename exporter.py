@@ -21,7 +21,7 @@ class TapisCollector(object):
                               username=os.environ['STREAMS_USER'],
                               account_type='service',
                               service_password=os.environ['STREAMS_SERVICE_PASSWORD'],
-                              tenant_id='master')
+                              tenant_id='master').get_tokens()
 
     def healthcheck(self, service):
         url = '%s/v3/%s/healthcheck' % (self.tapis_url, service)
