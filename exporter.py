@@ -36,7 +36,7 @@ class TapisCollector(object):
     def collect(self):
 
         # healthcheck
-        healthcheck_metric = GaugeMetricFamily('tapis_service_health', 'Service Health')
+        healthcheck_metric = GaugeMetricFamily('tapis_service_health', 'Service Health', labels=['service'])
         for service in self.services:
             value = self.healthcheck(service)
             healthcheck_metric.add_metric([service], int(value) )
