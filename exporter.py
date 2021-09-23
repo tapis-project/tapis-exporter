@@ -36,7 +36,7 @@ class TapisCollector(object):
     def collect(self):
 
         # healthcheck
-        healthcheck_metric = GaugeMetricFamily('tapis_service_health', 'Service Health', labels=['service'])
+        healthcheck_metric = GaugeMetricFamily('tapis_service_health', 'Service Health')
         for service in self.services:
             value = self.healthcheck(service)
             healthcheck_metric.add_metric([service], value)
@@ -49,12 +49,16 @@ class TapisCollector(object):
                 '_id' : 'upload_total',
                 'count':{'$sum':"$size"}
             }}]
-        yield CounterMetricFamily('tapis_streams_uploads_total_bytes', 'Amount of streaming data collected', labels=['report','streams'],
-                                  value=self.streams_metrics.aggregate(streams_data_pipeline))
-        yield CounterMetricFamily('tapis_streams_uploads_total', 'Number of data streams transferred', labels=['report','streams'],
-                                  value=self.streams_metrics.find({'type':'upload'}).count())
-        yield CounterMetricFamily('tapis_streams_archives_total', 'Number of stream archive policies registered', labels=['report','streams'],
-                                  value=self.streams_metrics.find({'type':'archive'}).count())
+        streams_xfer_total = CounterMetricFamily('tapis_streams_total_bytes', 'Amount of data collected')
+        streams_xfer_total.add_metric(['upload'], self.streams_metrics.aggregate(streams_data_pipeline) )
+        yield streams_xfer_total
+
+        streams_num_xfer = CounterMetricFamily('tapis_streams_transferred', 'Number of data streams transferred')
+        streams_num_xfer.add_metric(['upload'],self.streams_metrics.find({'type':'upload'}).count())
+        yield streams_num_xfer
+
+        yield CounterMetricFamily('tapis_streams_archives_total', 'Number of stream archive policies registered',
+            value = streams_num_archive.add_metric(self.streams_metrics.find({'type':'archive'}).count()))
     
 
 if __name__ == "__main__":
