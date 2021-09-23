@@ -50,11 +50,11 @@ class TapisCollector(object):
                 'count':{'$sum':"$size"}
             }}]
         yield CounterMetricFamily('tapis_streams_uploads_total_bytes', 'Amount of streaming data collected', labels=['report','streams'],
-                                  value=self.service_token.meta.streams_metrics.aggregate(streams_data_pipeline))
+                                  value=self.streams_metrics.aggregate(streams_data_pipeline))
         yield CounterMetricFamily('tapis_streams_uploads_total', 'Number of data streams transferred', labels=['report','streams'],
                                   value=self.streams_metrics.find({'type':'upload'}).count())
         yield CounterMetricFamily('tapis_streams_archives_total', 'Number of stream archive policies registered', labels=['report','streams'],
-                                  value=self.service_token.meta.streams_metrics.find({'type':'archive'}).count())
+                                  value=self.streams_metrics.find({'type':'archive'}).count())
     
 
 if __name__ == "__main__":
