@@ -10,7 +10,7 @@ import pymongo
 
 
 class TapisCollector(object):
-    def __init__(self,tapis_url, tapis_services=[], streams_db):
+    def __init__(self,tapis_url, tapis_services=[]):
         self.tapis_url = tapis_url
         
         # Use default serivces list if None has been specified
@@ -67,8 +67,7 @@ if __name__ == "__main__":
     print("Detected Inputs")
     print("TAPIS_URL : {}".format(tapis_url))
     print("TAPIS_SERVICES : {}".format(tapis_services))
-    print("STREAMS_DB : {}".format(streams_db))
 
     prometheus_client.start_http_server(8000)
-    REGISTRY.register(TapisCollector(tapis_url, tapis_services, streams_db))
+    REGISTRY.register(TapisCollector(tapis_url, tapis_services))
     while True: time.sleep(1)
