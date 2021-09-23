@@ -65,8 +65,8 @@ if __name__ == "__main__":
     print("Detected Inputs")
     print("TAPIS_URL : {}".format(tapis_url))
     print("TAPIS_SERVICES : {}".format(tapis_services))
-    print("META_USER : {}").format(s.environ['META_USER'])
-    print("STREAMS_DB : {}").format(s.environ['STREAMS_DB'])
+    print("META_USER : {}").format(os.environ['META_USER'])
+    print("STREAMS_DB : {}").format(os.environ['STREAMS_DB'])
 
     prometheus_client.start_http_server(8000)
     REGISTRY.register(TapisCollector(tapis_url, tapis_services))
