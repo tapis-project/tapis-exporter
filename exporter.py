@@ -39,7 +39,7 @@ class TapisCollector(object):
         healthcheck_metric = GaugeMetricFamily('tapis_service_health', 'Service Health', labels=['service'])
         for service in self.services:
             value = self.healthcheck(service)
-            healthcheck_metric.add_metric([service], int(value) )
+            healthcheck_metric.add_metric([service], value )
         yield healthcheck_metric
         
         # streams
@@ -52,11 +52,11 @@ class TapisCollector(object):
         yield streams_xfer_total
 
         streams_num_xfer = CounterMetricFamily('tapis_streams_transferred', 'Number of data streams transferred')
-        streams_num_xfer.add_metric(['upload'], int( self.streams_metrics.find({'type':'upload'}).count()) )
+        streams_num_xfer.add_metric(['upload'], self.streams_metrics.find({'type':'upload'}).count() )
         yield streams_num_xfer
 
         yield CounterMetricFamily('tapis_streams_archives_total', 'Number of stream archive policies registered',
-            value = int( self.streams_metrics.find({'type':'archive'}).count()) )
+            value = self.streams_metrics.find({'type':'archive'}).count())
     
 
 if __name__ == "__main__":
