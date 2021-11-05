@@ -45,8 +45,11 @@ class TapisCollector(object):
         # streams
         streams_data_pipeline = [
             { '$match': {'type':'upload'} },
-            { '$group': {'_id' : {'$sum':"size"} }}
+            { '$group': {'_id': None, 'total': {'$sum': '$size'}}
             ]
+        print(list(self.streams_metrics.aggregate(streams_data_pipeline)) )
+        sys.stdout.flush()
+
         streams_xfer_total = CounterMetricFamily('tapis_streams_transfer_bytes', 'Amount of data collected')
         streams_xfer_total.add_metric(['upload'], list(self.streams_metrics.aggregate(streams_data_pipeline))[0]['_id'] )
         yield streams_xfer_total
@@ -75,6 +78,7 @@ if __name__ == "__main__":
     print("TAPIS_SERVICES : {}".format(tapis_services))
     print("META_USER : {}".format(os.environ['META_USER']))
     print("STREAMS_DB : {}".format(os.environ['STREAMS_DB']))
+    sys.stdout.flush()
 
     prometheus_client.start_http_server(8000)
     REGISTRY.register(TapisCollector(tapis_url, tapis_services))
