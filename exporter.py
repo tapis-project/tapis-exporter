@@ -51,7 +51,7 @@ class TapisCollector(object):
         sys.stdout.flush()
 
         streams_xfer_total = CounterMetricFamily('tapis_streams_transfer_bytes', 'Amount of data collected')
-        streams_xfer_total.add_metric(['upload'], list(self.streams_metrics.aggregate(streams_data_pipeline))[0]['_id'] )
+        streams_xfer_total.add_metric(['upload'], list(self.streams_metrics.aggregate(streams_data_pipeline))[0]['total'] )
         yield streams_xfer_total
 
         streams_num_xfer = CounterMetricFamily('tapis_streams_transferred', 'Number of data streams transferred')
