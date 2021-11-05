@@ -45,7 +45,7 @@ class TapisCollector(object):
         # streams
         streams_data_pipeline = [
             { '$match': {'type':'upload'} },
-            { '$group': {'_id' : {'$sum':"$size"} }}
+            { '$group': {'_id' : {'$sum':"size"} }}
             ]
         streams_xfer_total = CounterMetricFamily('tapis_streams_transfer_bytes', 'Amount of data collected')
         streams_xfer_total.add_metric(['upload'], list(self.streams_metrics.aggregate(streams_data_pipeline))[0]['_id'] )
