@@ -45,7 +45,7 @@ class TapisCollector(object):
         # streams
         streams_data_pipeline = [
             { '$match': {'type':'upload'} },
-            { '$group': {'_id': None, 'total': {'$sum': '$size'}}
+            { '$group': {'_id': None, 'total': {'$sum': '$size'}}}
             ]
         print(list(self.streams_metrics.aggregate(streams_data_pipeline)) )
         sys.stdout.flush()
