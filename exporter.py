@@ -48,7 +48,7 @@ class TapisCollector(object):
             { '$group': {'_id': 0, 'total': {'$sum': '$size'}}}
             ]
         streams_xsfer_bytes_agg = self.streams_metrics.aggregate(pipeline=streams_data_pipeline)
-        print(streams_xsfer_bytes_agg[result])
+        print(streams_xsfer_bytes_agg['result'])
         sys.stdout.flush()
 
         streams_xfer_total = CounterMetricFamily('tapis_streams_transfer_bytes', 'Amount of data collected')
