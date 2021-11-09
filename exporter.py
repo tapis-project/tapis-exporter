@@ -49,7 +49,7 @@ class TapisCollector(object):
             },
             {
                 '$group': {
-                    '_id': None, 'total': {'$sum': '$size'}
+                    '_id': None, 'total': {'$sum': '$size'}, 'count':{'$sum':1},
                 }
             }
             ]
