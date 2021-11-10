@@ -50,7 +50,7 @@ class TapisCollector(object):
                 #},
                 {
                     "$group": {
-                        "_id":   {"$type"},
+                        "_id":   "$type",
                         "bytes": {"$sum": "$size"},
                         "count": {"$sum": 1},
                     }
