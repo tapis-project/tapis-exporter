@@ -43,23 +43,26 @@ class TapisCollector(object):
         yield healthcheck_metric
         
         # streams
-        streams_data_pipeline = [
-            {
-                '$match': {'type':'upload'}
-            },
-            {
-                '$group': {
-                    '_id': None, 'total': {'$sum': '$size'}, 'count':{'$sum':1},
+        streams_xsfer_bytes_agg = self.streams_metrics.aggregate(
+            [
+                {
+                    "$match": {"type":"upload"}
+                },
+                {
+                    "$group": {
+                        "_id":None,
+                        "total":{"$sum": "$size"},
+                        "count":{"$sum":1},
+                    }
                 }
-            }
             ]
-        streams_xsfer_bytes_agg = self.streams_metrics.aggregate(pipeline=streams_data_pipeline)
+        )
         print(list(streams_xsfer_bytes_agg))
         sys.stdout.flush()
 
-        streams_xfer_total = CounterMetricFamily('tapis_streams_transfer_bytes', 'Amount of data collected')
-        streams_xfer_total.add_metric(['upload'], list(self.streams_metrics.aggregate(streams_data_pipeline))[0]['total'] )
-        yield streams_xfer_total
+        #streams_xfer_bytes = CounterMetricFamily('tapis_streams_transfer_bytes', 'Amount of data collected')
+        #streams_xfer_bytes.add_metric(['upload'], list(streams_xsfer_bytes_agg)[0]['total'] )
+        #yield streams_xfer_bytes
 
         streams_num_xfer = CounterMetricFamily('tapis_streams_transferred', 'Number of data streams transferred')
         streams_num_xfer.add_metric(['upload'], self.streams_metrics.find({'type':'upload'}).count() )
