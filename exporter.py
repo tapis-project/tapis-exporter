@@ -61,10 +61,12 @@ class TapisCollector(object):
         streams_transfers_bytes = CounterMetricFamily('tapis_streams_transfers_bytes', 'Amount of streams data collected')
 
         for entry in streams_xfer_summary:
-            streams_transfers_total.add_metric([entry['_id']], entry['count'])
-            yield streams_transfers_total
-            streams_transfers_bytes.add_metric([entry['_id']], entry['bytes'])
-            yield streams_transfers_bytes
+            print(entry)
+            sys.stdout.flush()
+            #streams_transfers_total.add_metric([entry['_id']], entry['count'])
+            #yield streams_transfers_total
+            #streams_transfers_bytes.add_metric([entry['_id']], entry['bytes'])
+            #yield streams_transfers_bytes
 
 #        streams_upload_bytes = CounterMetricFamily('tapis_streams_transfer_bytes', 'Amount of data collected')
 #        streams_upload_bytes.add_metric(['upload'], streams_xfer_summary['upload']['bytes'] )
