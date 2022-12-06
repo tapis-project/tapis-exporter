@@ -17,7 +17,7 @@ class TapisCollector(object):
         else:
             self.services = tapis_services
 
-        mongo_client = pymongo.MongoClient("mongodb://restheart-mongo:27017/",
+        mongo_client = pymongo.MongoClient(os.getenv('META_DB_URL','mongodb://restheart-mongo:27017/'),
                         authSource='admin',
                         username=os.environ['META_USER'],
                         password=os.environ['META_PASSWORD'])
@@ -80,6 +80,7 @@ if __name__ == "__main__":
     print("Detected Inputs")
     print("TAPIS_URL : {}".format(tapis_url))
     print("TAPIS_SERVICES : {}".format(tapis_services))
+    print("META_DB_URL : {}".format(os.getenv('META_DB_URL','mongodb://restheart-mongo:27017/')))
     print("META_USER : {}".format(os.environ['META_USER']))
     print("STREAMS_DB : {}".format(os.environ['STREAMS_DB']))
     sys.stdout.flush()
