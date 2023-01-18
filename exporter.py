@@ -26,7 +26,7 @@ class TapisCollector(object):
 
     def healthcheck(self, service):
         url = '%s/v3/%s/healthcheck' % (self.tapis_url, service)
-        r = requests.get(url)
+        r = requests.get(url, verify=False)
         status = r.status_code
         if (status == 200):
             return 1 # Healthy
