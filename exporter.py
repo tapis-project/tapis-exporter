@@ -62,9 +62,9 @@ class TapisCollector(object):
 
         for entry in streams_xfer_summary:
             streams_transfers_total.add_metric([entry['_id']], entry['count'])
-            yield streams_transfers_total
             streams_transfers_bytes.add_metric([entry['_id']], entry['bytes'])
-            yield streams_transfers_bytes
+        yield streams_transfers_total
+        yield streams_transfers_bytes
 
 if __name__ == "__main__":
     # Check that the environment variables have been specified, fail if they have not.
