@@ -58,14 +58,14 @@ class TapisCollector(object):
         streams_xfer_summary = list(streams_xfer_agg)
 
         streams_transfers_total = CounterMetricFamily('tapis_streams_transfers_total', 'Number of streams data transfers', labels=['type'])
+        streams_transfers_bytes = CounterMetricFamily('tapis_streams_transfers_bytes', 'Amount of streams data collected', labels=['type'], unit='bytes')
+
         for entry in streams_xfer_summary:
             streams_transfers_total.add_metric([entry['_id']], entry['count'])
-        yield streams_transfers_total
+            yield streams_transfers_total
 
-        streams_transfers_bytes = CounterMetricFamily('tapis_streams_transfers_bytes', 'Amount of streams data collected', labels=['type'], unit='bytes')
-        for entry in streams_xfer_summary:
             streams_transfers_bytes.add_metric([entry['_id']], entry['bytes'])
-        yield streams_transfers_bytes
+            yield streams_transfers_bytes
 
 if __name__ == "__main__":
     # Check that the environment variables have been specified, fail if they have not.
